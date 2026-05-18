@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Portal</title>
+    <title>DSEF Attendance Portal</title>
+    
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/en/thumb/b/b6/Delhi_University.svg/960px-Delhi_University.svg.png" type="image/png">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
@@ -29,15 +31,12 @@
             --border: #E2E8F0;
         }
 
-       body { 
+        body { 
             font-family: 'Inter', sans-serif; 
             background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
-            
-            /* The Fix: Lock height and include padding in the calculation */
             height: 100vh; 
             box-sizing: border-box;
-            overflow: hidden; /* completely hides the main page scrollbar */
-            
+            overflow: hidden; 
             margin: 0; 
             padding: 20px; 
             display: flex; 
@@ -50,11 +49,17 @@
             background-color: var(--card-bg); 
             padding: 40px 30px; 
             border-radius: 16px; 
-            /* Modern soft shadow */
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-            max-width: 720px; 
-            width: 100%; 
+            width: 90%; 
+            max-width: 420px; 
             box-sizing: border-box;
+        }
+
+        .university-logo {
+            display: block;
+            margin: 0 auto 15px auto; 
+            width: 85px; 
+            height: auto;
         }
 
         h2 {
@@ -86,7 +91,6 @@
             background-color: #F8FAFC;
         }
 
-        /* Focus ring for accessibility and modern feel */
         input:focus {
             outline: none;
             border-color: var(--primary);
@@ -94,127 +98,40 @@
             box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
         }
 
-        .btn-group { 
-            display: flex; 
-            gap: 12px; 
-            margin-top: 24px; 
-        }
-
+        .btn-group { display: flex; gap: 12px; margin-top: 24px; }
         button { 
-            flex: 1;
-            padding: 14px; 
-            border: none; 
-            border-radius: 8px; 
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Inter', sans-serif;
+            flex: 1; padding: 14px; border: none; border-radius: 8px; 
+            font-size: 15px; font-weight: 600; cursor: pointer;
+            transition: all 0.2s ease; display: flex; justify-content: center;
+            align-items: center; font-family: 'Inter', sans-serif;
         }
+        .btn-primary { background-color: var(--primary); color: white; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2); }
+        .btn-primary:hover:not(:disabled) { background-color: var(--primary-hover); transform: translateY(-1px); }
+        .btn-secondary { background-color: var(--secondary); color: white; }
+        .btn-secondary:hover:not(:disabled) { background-color: var(--secondary-hover); transform: translateY(-1px); }
+        button:disabled { opacity: 0.65; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
 
-        .btn-primary { 
-            background-color: var(--primary); 
-            color: white; 
-            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
-        }
-        .btn-primary:hover:not(:disabled) { 
-            background-color: var(--primary-hover); 
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary { 
-            background-color: var(--secondary); 
-            color: white; 
-        }
-        .btn-secondary:hover:not(:disabled) { 
-            background-color: var(--secondary-hover); 
-            transform: translateY(-1px);
-        }
-
-        button:disabled { 
-            opacity: 0.65; 
-            cursor: not-allowed; 
-            transform: none !important;
-            box-shadow: none !important;
-        }
-
-        .message { 
-            padding: 14px; 
-            border-radius: 8px; 
-            text-align: center; 
-            font-weight: 500; 
-            margin-bottom: 20px;
-            font-size: 14px;
-            animation: slideDown 0.3s ease-out;
-        }
+        .message { padding: 14px; border-radius: 8px; text-align: center; font-weight: 500; margin-bottom: 20px; font-size: 14px; animation: slideDown 0.3s ease-out; }
         .success { background-color: var(--success-bg); color: #065F46; border: 1px solid #A7F3D0; }
         .error { background-color: var(--danger-bg); color: #991B1B; border: 1px solid #FECACA; }
         .warning { background-color: var(--warning-bg); color: var(--warning-text); border: 1px solid #FDE68A; }
 
-        /* Dashboard/History Card Styling */
-        .record-card { 
-            background-color: #F8FAFC; 
-            border: 1px solid var(--border); 
-            border-radius: 12px; 
-            padding: 20px; 
-            margin-top: 25px; 
-            animation: fadeIn 0.4s ease-out;
-        }
-        .percentage { 
-            font-size: 32px; 
-            font-weight: 700; 
-            text-align: center; 
-            margin-bottom: 4px; 
-            color: var(--primary); 
-            letter-spacing: -1px;
-        }
-        .history-list { 
-            max-height: 180px; 
-            overflow-y: auto; 
-            border-top: 1px solid var(--border); 
-            padding-top: 15px; 
-            margin-top: 15px; 
-        }
-        .history-item { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            padding: 10px 0; 
-            border-bottom: 1px solid #F1F5F9; 
-            font-size: 14px; 
-            font-weight: 500;
-        }
+        .record-card { background-color: #F8FAFC; border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top: 25px; animation: fadeIn 0.4s ease-out; }
+        .percentage { font-size: 32px; font-weight: 700; text-align: center; margin-bottom: 4px; color: var(--primary); letter-spacing: -1px; }
+        .history-list { max-height: 180px; overflow-y: auto; border-top: 1px solid var(--border); padding-top: 15px; margin-top: 15px; }
+        .history-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px; font-weight: 500; }
         .history-item:last-child { border-bottom: none; }
         
-        /* Status Badges */
-        .badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .badge-present { background-color: var(--success-bg); color: var(--success); }
         .badge-absent { background-color: var(--danger-bg); color: var(--danger); }
 
-        /* CSS Loading Spinner */
-        .spinner {
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top: 3px solid #fff;
-            width: 18px;
-            height: 18px;
-            animation: spin 1s linear infinite;
-        }
+        .spinner { border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top: 3px solid #fff; width: 18px; height: 18px; animation: spin 1s linear infinite; }
 
-        /* Animations */
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Scrollbar styling for history list */
         .history-list::-webkit-scrollbar { width: 6px; }
         .history-list::-webkit-scrollbar-track { background: transparent; }
         .history-list::-webkit-scrollbar-thumb { background-color: #CBD5E1; border-radius: 10px; }
@@ -233,10 +150,10 @@
             // ==========================================
             // 🛑 SETUP YOUR VARIABLES HERE 🛑
             // ==========================================
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbyKBA4CMxEiC5xbwU-OATiUS7u-Ssunxg3vgTe9cIOkl7e-JUoV-qdQWEo1yaWzceSD/exec';
-            const CAMPUS_LAT = 28.6139;  // Update with your latitude
-            const CAMPUS_LON = 77.2090;  // Update with your longitude
-            const MAX_DISTANCE_METERS = 30; 
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyKBA4CMxEiC5xbwU-OATiUS7u-Ssunxg3vgTe9cIOkl7e-JUoV-qdQWEo1yaWzceSD/exec'; // The /exec URL
+            const CAMPUS_LAT = 28.6139;  // DU Latitude
+            const CAMPUS_LON = 77.2090;  // DU Longitude
+            const MAX_DISTANCE_METERS = 30; // Max allowed distance in meters
             // ==========================================
 
             const checkIsClassTime = () => {
@@ -244,6 +161,7 @@
                 const currentDay = now.getDay(); 
                 const timeAsDecimal = now.getHours() + (now.getMinutes() / 60);
 
+                // Edit your schedule here (0=Sun, 1=Mon...6=Sat)
                 const schedule = {
                     1: [{ start: 10.0, end: 12.0 }, { start: 14.0, end: 15.5 }],
                     4: [{ start: 10.33, end: 11.33 }] 
@@ -306,9 +224,12 @@
                     setIsLoading(false); return; 
                 }
 
-                // Get local date in YYYY-MM-DD
+                // Force local date creation instead of UTC
                 const now = new Date();
-                const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`; 
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const today = `${year}-${month}-${day}`; 
 
                 try {
                     const response = await fetch(scriptURL, {
@@ -324,7 +245,7 @@
                         setStatus({ type: 'error', message: 'Error: ' + result.message });
                     }
                 } catch (error) {
-                    setStatus({ type: 'error', message: 'Network error. Please try again.' });
+                    setStatus({ type: 'error', message: 'Network error. Please try again or check browser shields.' });
                 } finally {
                     setIsLoading(false);
                 }
@@ -355,7 +276,8 @@
 
             return (
                 <div className="container">
-                    <h2>Student Portal</h2>
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b6/Delhi_University.svg/960px-Delhi_University.svg.png" alt="DU Logo" className="university-logo" />
+                    <h2>Attendance Portal</h2>
                     
                     {!isClassActive && (
                         <div className="message warning">
@@ -372,13 +294,7 @@
 
                     <form onSubmit={handleMarkPresent}>
                         <label>Student Roll Number</label>
-                        <input 
-                            type="text" 
-                            value={rollNo} 
-                            onChange={(e) => setRollNo(e.target.value)} 
-                            required 
-                            placeholder="e.g., 42" 
-                        />
+                        <input type="text" value={rollNo} onChange={(e) => setRollNo(e.target.value)} required placeholder="e.g., 42" />
                         
                         <div className="btn-group">
                             <button type="submit" className="btn-primary" disabled={isLoading || isChecking || !isClassActive}>
