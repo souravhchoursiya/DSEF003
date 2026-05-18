@@ -57,7 +57,7 @@
                     ]
                 };
 
-                if (!schedule[currentDay]) return false;
+                if (!schedule[currentDay]) return true;
 
                 const todaysLectures = schedule[currentDay];
                 for (let i = 0; i < todaysLectures.length; i++) {
