@@ -308,6 +308,10 @@
             const CAMPUS_LAT = 28.6139;  // DU Latitude
             const CAMPUS_LON = 77.2090;  // DU Longitude
             const MAX_DISTANCE_METERS = 30; // Max allowed distance in meters
+
+            // NEW: CR Contact Info
+            const CR_NAME = "Souravh Choursiya";
+            const CR_PHONE = "919891574024"; // EXACT FORMAT: Country code (91 for India) + 10 digit number. NO '+' or spaces!
             // ==========================================
 
             const checkIsClassTime = () => {
@@ -448,7 +452,7 @@
 
                     <form onSubmit={handleMarkPresent}>
                         <label>Student Roll Number</label>
-                        <input type="text" value={rollNo} onChange={(e) => setRollNo(e.target.value)} required placeholder="e.g., 42" />
+                        <input type="text" value={rollNo} onChange={(e) => setRollNo(e.target.value)} required placeholder="e.g., 25241774204" />
 
                         <div className="btn-group">
                             <button type="submit" className="btn-primary" disabled={isLoading || isChecking || !isClassActive}>
@@ -485,6 +489,20 @@
                             </div>
                         </div>
                     )}
+
+                    {/* NEW: CR WhatsApp Note */}
+                    <div style={{ marginTop: '25px', textAlign: 'center', fontSize: '13px', color: 'var(--text-muted)' }}>
+                        Note: If you find any discrepancy in your record, please contact the CR:{' '}
+                        <a
+                            href={`https://wa.me/${CR_PHONE}?text=Hi%20${CR_NAME},%20I%20have%20an%20issue%20with%20my%20attendance.`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ color: 'var(--primary)', fontWeight: '600', textDecoration: 'none' }}
+                        >
+                            {CR_NAME} (WhatsApp)
+                        </a>
+                    </div>
+
                 </div>
             );
         }
