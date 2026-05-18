@@ -292,7 +292,7 @@
 </head>
 
 <body>
-    <div id="root" style="width: 100%;"></div>
+    <div id="root" style="width: 90%;"></div>
     <script type="text/babel">
         function AttendanceApp() {
             const [rollNo, setRollNo] = React.useState('');
@@ -321,7 +321,7 @@
                     4: [{ start: 10.33, end: 11.33 }]
                 };
 
-                if (!schedule[currentDay]) return true;
+                if (!schedule[currentDay]) return false;
                 const todaysLectures = schedule[currentDay];
                 for (let i = 0; i < todaysLectures.length; i++) {
                     if (timeAsDecimal >= todaysLectures[i].start && timeAsDecimal <= todaysLectures[i].end) return true;
