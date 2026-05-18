@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DSEF Attendance Portal</title>
-    
-    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/en/thumb/b/b6/Delhi_University.svg/960px-Delhi_University.svg.png" type="image/png">
-    
+
+    <link rel="icon"
+        href="https://upload.wikimedia.org/wikipedia/en/thumb/b/b6/Delhi_University.svg/960px-Delhi_University.svg.png"
+        type="image/png">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    
+
     <style>
         :root {
             --primary: #4F46E5;
@@ -31,24 +34,25 @@
             --border: #E2E8F0;
         }
 
-        body { 
-            font-family: 'Inter', sans-serif; 
+        body {
+            font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
-            height: 100vh; 
+            height: 100vh;
             box-sizing: border-box;
-            overflow: hidden; 
-            margin: 0; 
-            padding: 20px; 
-            display: flex; 
+            overflow: hidden;
+            margin: 0;
+            padding: 20px;
+            display: flex;
             justify-content: center;
             align-items: center;
             color: var(--text-main);
         }
 
-        .container { 
-            background-color: var(--card-bg); 
-            padding: 40px 30px; 
-            border-radius: 16px; 
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 16px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
             width: 99%;
             box-sizing: border-box;
@@ -56,8 +60,8 @@
 
         .university-logo {
             display: block;
-            margin: 0 auto 15px auto; 
-            width: 85px; 
+            margin: 0 auto 15px auto;
+            width: 85px;
             height: auto;
         }
 
@@ -78,12 +82,12 @@
             color: var(--text-muted);
         }
 
-        input { 
-            width: 100%; 
-            padding: 14px; 
-            border: 1px solid var(--border); 
-            border-radius: 8px; 
-            box-sizing: border-box; 
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-sizing: border-box;
             font-size: 16px;
             font-family: 'Inter', sans-serif;
             transition: all 0.2s ease;
@@ -97,47 +101,198 @@
             box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
         }
 
-        .btn-group { display: flex; gap: 12px; margin-top: 24px; }
-        button { 
-            flex: 1; padding: 14px; border: none; border-radius: 8px; 
-            font-size: 15px; font-weight: 600; cursor: pointer;
-            transition: all 0.2s ease; display: flex; justify-content: center;
-            align-items: center; font-family: 'Inter', sans-serif;
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
         }
-        .btn-primary { background-color: var(--primary); color: white; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2); }
-        .btn-primary:hover:not(:disabled) { background-color: var(--primary-hover); transform: translateY(-1px); }
-        .btn-secondary { background-color: var(--secondary); color: white; }
-        .btn-secondary:hover:not(:disabled) { background-color: var(--secondary-hover); transform: translateY(-1px); }
-        button:disabled { opacity: 0.65; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
 
-        .message { padding: 14px; border-radius: 8px; text-align: center; font-weight: 500; margin-bottom: 20px; font-size: 14px; animation: slideDown 0.3s ease-out; }
-        .success { background-color: var(--success-bg); color: #065F46; border: 1px solid #A7F3D0; }
-        .error { background-color: var(--danger-bg); color: #991B1B; border: 1px solid #FECACA; }
-        .warning { background-color: var(--warning-bg); color: var(--warning-text); border: 1px solid #FDE68A; }
+        button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+        }
 
-        .record-card { background-color: #F8FAFC; border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top: 25px; animation: fadeIn 0.4s ease-out; }
-        .percentage { font-size: 32px; font-weight: 700; text-align: center; margin-bottom: 4px; color: var(--primary); letter-spacing: -1px; }
-        .history-list { max-height: 180px; overflow-y: auto; border-top: 1px solid var(--border); padding-top: 15px; margin-top: 15px; }
-        .history-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px; font-weight: 500; }
-        .history-item:last-child { border-bottom: none; }
-        
-        .badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
-        .badge-present { background-color: var(--success-bg); color: var(--success); }
-        .badge-absent { background-color: var(--danger-bg); color: var(--danger); }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+        }
 
-        .spinner { border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top: 3px solid #fff; width: 18px; height: 18px; animation: spin 1s linear infinite; }
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
 
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
 
-        .history-list::-webkit-scrollbar { width: 6px; }
-        .history-list::-webkit-scrollbar-track { background: transparent; }
-        .history-list::-webkit-scrollbar-thumb { background-color: #CBD5E1; border-radius: 10px; }
+        .btn-secondary:hover:not(:disabled) {
+            background-color: var(--secondary-hover);
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .message {
+            padding: 14px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 20px;
+            font-size: 14px;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .success {
+            background-color: var(--success-bg);
+            color: #065F46;
+            border: 1px solid #A7F3D0;
+        }
+
+        .error {
+            background-color: var(--danger-bg);
+            color: #991B1B;
+            border: 1px solid #FECACA;
+        }
+
+        .warning {
+            background-color: var(--warning-bg);
+            color: var(--warning-text);
+            border: 1px solid #FDE68A;
+        }
+
+        .record-card {
+            background-color: #F8FAFC;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 25px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .percentage {
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 4px;
+            color: var(--primary);
+            letter-spacing: -1px;
+        }
+
+        .history-list {
+            max-height: 180px;
+            overflow-y: auto;
+            border-top: 1px solid var(--border);
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #F1F5F9;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-present {
+            background-color: var(--success-bg);
+            color: var(--success);
+        }
+
+        .badge-absent {
+            background-color: var(--danger-bg);
+            color: var(--danger);
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #fff;
+            width: 18px;
+            height: 18px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .history-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .history-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .history-list::-webkit-scrollbar-thumb {
+            background-color: #CBD5E1;
+            border-radius: 10px;
+        }
     </style>
 </head>
+
 <body>
-    <div id="root"></div>
+    <div id="root" style="width: 100%;"></div>
     <script type="text/babel">
         function AttendanceApp() {
             const [rollNo, setRollNo] = React.useState('');
@@ -157,32 +312,32 @@
 
             const checkIsClassTime = () => {
                 const now = new Date();
-                const currentDay = now.getDay(); 
+                const currentDay = now.getDay();
                 const timeAsDecimal = now.getHours() + (now.getMinutes() / 60);
 
                 // Edit your schedule here (0=Sun, 1=Mon...6=Sat)
                 const schedule = {
                     1: [{ start: 10.0, end: 12.0 }, { start: 14.0, end: 15.5 }],
-                    4: [{ start: 10.33, end: 11.33 }] 
+                    4: [{ start: 10.33, end: 11.33 }]
                 };
 
                 if (!schedule[currentDay]) return true;
                 const todaysLectures = schedule[currentDay];
                 for (let i = 0; i < todaysLectures.length; i++) {
-                    if (timeAsDecimal >= todaysLectures[i].start && timeAsDecimal <= todaysLectures[i].end) return true; 
+                    if (timeAsDecimal >= todaysLectures[i].start && timeAsDecimal <= todaysLectures[i].end) return true;
                 }
-                return false; 
+                return false;
             };
 
             const isClassActive = checkIsClassTime();
 
             const getDistance = (lat1, lon1, lat2, lon2) => {
-                const R = 6371e3; 
+                const R = 6371e3;
                 const dLat = (lat2 - lat1) * Math.PI / 180;
                 const dLon = (lon2 - lon1) * Math.PI / 180;
-                const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
-                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-                return R * c; 
+                const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                return R * c;
             };
 
             const getUserLocation = () => {
@@ -201,18 +356,18 @@
                     setStatus({ type: 'error', message: 'Attendance is closed outside of lecture hours.' });
                     return;
                 }
-                if(!rollNo) return;
-                
+                if (!rollNo) return;
+
                 setIsLoading(true); setRecord(null);
                 setStatus({ type: '', message: 'Acquiring GPS location... Please allow access.' });
-                
+
                 try {
                     const position = await getUserLocation();
                     const distance = getDistance(position.coords.latitude, position.coords.longitude, CAMPUS_LAT, CAMPUS_LON);
-                    
+
                     if (distance > MAX_DISTANCE_METERS) {
                         setStatus({ type: 'error', message: `You are ${Math.round(distance)}m away. You must be within ${MAX_DISTANCE_METERS}m of class.` });
-                        setIsLoading(false); return; 
+                        setIsLoading(false); return;
                     }
                     setStatus({ type: '', message: 'Location verified. Submitting...' });
 
@@ -220,7 +375,7 @@
                     let errorMsg = 'Failed to get location. Ensure GPS is on and permissions are granted.';
                     if (locError.code === 1) errorMsg = "Permission denied. You must allow location access.";
                     setStatus({ type: 'error', message: errorMsg });
-                    setIsLoading(false); return; 
+                    setIsLoading(false); return;
                 }
 
                 // Force local date creation instead of UTC
@@ -228,7 +383,7 @@
                 const year = now.getFullYear();
                 const month = String(now.getMonth() + 1).padStart(2, '0');
                 const day = String(now.getDate()).padStart(2, '0');
-                const today = `${year}-${month}-${day}`; 
+                const today = `${year}-${month}-${day}`;
 
                 try {
                     const response = await fetch(scriptURL, {
@@ -239,7 +394,7 @@
                     const result = await response.json();
                     if (result.status === 'success') {
                         setStatus({ type: 'success', message: `Success! Attendance marked for today.` });
-                        setRollNo(''); 
+                        setRollNo('');
                     } else {
                         setStatus({ type: 'error', message: 'Error: ' + result.message });
                     }
@@ -251,7 +406,7 @@
             };
 
             const handleCheckAttendance = async () => {
-                if(!rollNo) {
+                if (!rollNo) {
                     setStatus({ type: 'error', message: 'Please enter your Roll Number first.' });
                     return;
                 }
@@ -277,7 +432,7 @@
                 <div className="container">
                     <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b6/Delhi_University.svg/960px-Delhi_University.svg.png" alt="DU Logo" className="university-logo" />
                     <h2>Attendance Portal</h2>
-                    
+
                     {!isClassActive && (
                         <div className="message warning">
                             Attendance is currently closed. It will open automatically during lecture hours.
@@ -286,7 +441,7 @@
 
                     {status.message && (
                         <div className={`message ${status.type}`}>
-                            {status.type === '' && isLoading && '⏳ '} 
+                            {status.type === '' && isLoading && '⏳ '}
                             {status.message}
                         </div>
                     )}
@@ -294,7 +449,7 @@
                     <form onSubmit={handleMarkPresent}>
                         <label>Student Roll Number</label>
                         <input type="text" value={rollNo} onChange={(e) => setRollNo(e.target.value)} required placeholder="e.g., 42" />
-                        
+
                         <div className="btn-group">
                             <button type="submit" className="btn-primary" disabled={isLoading || isChecking || !isClassActive}>
                                 {isLoading ? <div className="spinner"></div> : 'Mark Present'}
@@ -308,19 +463,19 @@
                     {record && (
                         <div className="record-card">
                             <div className="percentage">{record.percentage}%</div>
-                            <div style={{textAlign: 'center', color: 'var(--text-muted)', fontSize: '14px', fontWeight: '500'}}>
+                            <div style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '14px', fontWeight: '500' }}>
                                 Present: {record.presentClasses} of {record.totalClasses} Days
                             </div>
-                            
+
                             <div className="history-list">
                                 {record.history.length === 0 ? (
-                                    <div style={{textAlign: 'center', padding: '20px', color: 'var(--text-muted)', fontSize: '14px'}}>
+                                    <div style={{ textAlign: 'center', padding: '20px', color: 'var(--text-muted)', fontSize: '14px' }}>
                                         No attendance records found yet.
                                     </div>
                                 ) : (
                                     record.history.map((day, index) => (
                                         <div key={index} className="history-item">
-                                            <span style={{color: 'var(--secondary)'}}>{day.date}</span>
+                                            <span style={{ color: 'var(--secondary)' }}>{day.date}</span>
                                             <span className={`badge ${day.status === 'Present' ? 'badge-present' : 'badge-absent'}`}>
                                                 {day.status}
                                             </span>
@@ -338,4 +493,5 @@
         root.render(<AttendanceApp />);
     </script>
 </body>
+
 </html>
