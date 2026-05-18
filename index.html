@@ -1,138 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DSEF003 | Attendance Portal</title>
+    <title>Student Portal</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 20px;
+        :root {
+            --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --secondary: #475569;
+            --secondary-hover: #334155;
+            --bg-color: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --success: #10B981;
+            --success-bg: #D1FAE5;
+            --danger: #EF4444;
+            --danger-bg: #FEE2E2;
+            --warning-bg: #FEF3C7;
+            --warning-text: #92400E;
+            --border: #E2E8F0;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            /* Soft gradient background */
+            background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+            min-height: 100vh;
+            margin: 0; 
+            padding: 20px; 
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+        }
+
+        .container { 
+            background-color: var(--card-bg); 
+            padding: 40px 30px; 
+            border-radius: 16px; 
+            /* Modern soft shadow */
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            max-width: 420px; 
+            width: 100%; 
+            box-sizing: border-box;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        input { 
+            width: 100%; 
+            padding: 14px; 
+            border: 1px solid var(--border); 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+            background-color: #F8FAFC;
+        }
+
+        /* Focus ring for accessibility and modern feel */
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #FFF;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+
+        .btn-group { 
+            display: flex; 
+            gap: 12px; 
+            margin-top: 24px; 
+        }
+
+        button { 
+            flex: 1;
+            padding: 14px; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
             display: flex;
             justify-content: center;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
         }
 
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
+        .btn-primary { 
+            background-color: var(--primary); 
+            color: white; 
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+        }
+        .btn-primary:hover:not(:disabled) { 
+            background-color: var(--primary-hover); 
+            transform: translateY(-1px);
         }
 
-        input,
-        button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 16px;
+        .btn-secondary { 
+            background-color: var(--secondary); 
+            color: white; 
+        }
+        .btn-secondary:hover:not(:disabled) { 
+            background-color: var(--secondary-hover); 
+            transform: translateY(-1px);
         }
 
-        .btn-group {
-            display: flex;
-            gap: 10px;
+        button:disabled { 
+            opacity: 0.65; 
+            cursor: not-allowed; 
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .message { 
+            padding: 14px; 
+            border-radius: 8px; 
+            text-align: center; 
+            font-weight: 500; 
             margin-bottom: 20px;
-            margin-top: 15px;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .btn-primary:disabled {
-            background-color: #a0cbf5;
-            cursor: not-allowed;
-        }
-
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .btn-secondary:disabled {
-            background-color: #adb5bd;
-            cursor: not-allowed;
-        }
-
-        .message {
-            padding: 10px;
-            border-radius: 4px;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .record-card {
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 6px;
-            padding: 15px;
-            margin-top: 20px;
-        }
-
-        .percentage {
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .history-list {
-            max-height: 150px;
-            overflow-y: auto;
-            border-top: 1px solid #ccc;
-            padding-top: 10px;
-            margin-top: 10px;
-        }
-
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
-            border-bottom: 1px solid #eee;
             font-size: 14px;
+            animation: slideDown 0.3s ease-out;
+        }
+        .success { background-color: var(--success-bg); color: #065F46; border: 1px solid #A7F3D0; }
+        .error { background-color: var(--danger-bg); color: #991B1B; border: 1px solid #FECACA; }
+        .warning { background-color: var(--warning-bg); color: var(--warning-text); border: 1px solid #FDE68A; }
+
+        /* Dashboard/History Card Styling */
+        .record-card { 
+            background-color: #F8FAFC; 
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            padding: 20px; 
+            margin-top: 25px; 
+            animation: fadeIn 0.4s ease-out;
+        }
+        .percentage { 
+            font-size: 32px; 
+            font-weight: 700; 
+            text-align: center; 
+            margin-bottom: 4px; 
+            color: var(--primary); 
+            letter-spacing: -1px;
+        }
+        .history-list { 
+            max-height: 180px; 
+            overflow-y: auto; 
+            border-top: 1px solid var(--border); 
+            padding-top: 15px; 
+            margin-top: 15px; 
+        }
+        .history-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding: 10px 0; 
+            border-bottom: 1px solid #F1F5F9; 
+            font-size: 14px; 
+            font-weight: 500;
+        }
+        .history-item:last-child { border-bottom: none; }
+        
+        /* Status Badges */
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-present { background-color: var(--success-bg); color: var(--success); }
+        .badge-absent { background-color: var(--danger-bg); color: var(--danger); }
+
+        /* CSS Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 3px solid #fff;
+            width: 18px;
+            height: 18px;
+            animation: spin 1s linear infinite;
         }
 
-        .text-present {
-            color: #28a745;
-            font-weight: bold;
-        }
+        /* Animations */
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .text-absent {
-            color: #dc3545;
-            font-weight: bold;
-        }
+        /* Scrollbar styling for history list */
+        .history-list::-webkit-scrollbar { width: 6px; }
+        .history-list::-webkit-scrollbar-track { background: transparent; }
+        .history-list::-webkit-scrollbar-thumb { background-color: #CBD5E1; border-radius: 10px; }
     </style>
 </head>
-
 <body>
     <div id="root"></div>
     <script type="text/babel">
@@ -143,55 +226,85 @@
             const [isChecking, setIsChecking] = React.useState(false);
             const [record, setRecord] = React.useState(null);
 
-            // ---> PASTE YOUR APPS SCRIPT WEB APP URL HERE <---
+            // ==========================================
+            // 🛑 SETUP YOUR VARIABLES HERE 🛑
+            // ==========================================
             const scriptURL = 'https://script.google.com/macros/s/AKfycbyKBA4CMxEiC5xbwU-OATiUS7u-Ssunxg3vgTe9cIOkl7e-JUoV-qdQWEo1yaWzceSD/exec';
+            const CAMPUS_LAT = 28.6139;  // Update with your latitude
+            const CAMPUS_LON = 77.2090;  // Update with your longitude
+            const MAX_DISTANCE_METERS = 30; 
+            // ==========================================
 
-            // --- LECTURE SCHEDULE LOGIC ---
             const checkIsClassTime = () => {
                 const now = new Date();
-                const currentDay = now.getDay();
+                const currentDay = now.getDay(); 
                 const timeAsDecimal = now.getHours() + (now.getMinutes() / 60);
 
-                // YOUR EXACT SCHEDULE (Edit this block)
                 const schedule = {
-                    1: [ // Monday
-                        { start: 0.0, end: 12.0 },              // 10:00 AM to 12:00 PM
-                        { start: 0.0, end: 12 + (30 / 60) }       // 2:00 PM to 3:30 PM
-                    ],
-                    4: [ // Thursday
-                        { start: 10 + (20 / 60), end: 11 + (20 / 60) } // Exactly 10:20 AM to 11:20 AM
-                    ]
+                    1: [{ start: 10.0, end: 12.0 }, { start: 14.0, end: 15.5 }],
+                    4: [{ start: 10.33, end: 11.33 }] 
                 };
 
-                if (!schedule[currentDay]) return true;
-
+                if (!schedule[currentDay]) return false;
                 const todaysLectures = schedule[currentDay];
                 for (let i = 0; i < todaysLectures.length; i++) {
-                    if (timeAsDecimal >= todaysLectures[i].start && timeAsDecimal <= todaysLectures[i].end) {
-                        return true;
-                    }
+                    if (timeAsDecimal >= todaysLectures[i].start && timeAsDecimal <= todaysLectures[i].end) return true; 
                 }
-                return false;
+                return false; 
             };
 
             const isClassActive = checkIsClassTime();
 
+            const getDistance = (lat1, lon1, lat2, lon2) => {
+                const R = 6371e3; 
+                const dLat = (lat2 - lat1) * Math.PI / 180;
+                const dLon = (lon2 - lon1) * Math.PI / 180;
+                const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                return R * c; 
+            };
+
+            const getUserLocation = () => {
+                return new Promise((resolve, reject) => {
+                    if (!navigator.geolocation) {
+                        reject('Geolocation not supported.');
+                    } else {
+                        navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+                    }
+                });
+            };
+
             const handleMarkPresent = async (e) => {
                 e.preventDefault();
                 if (!checkIsClassTime()) {
-                    setStatus({ type: 'error', message: 'Attendance is closed. It is not class time.' });
+                    setStatus({ type: 'error', message: 'Attendance is closed outside of lecture hours.' });
                     return;
                 }
-                if (!rollNo) return;
+                if(!rollNo) return;
+                
                 setIsLoading(true); setRecord(null);
-                setStatus({ type: '', message: 'Submitting...' });
+                setStatus({ type: '', message: 'Acquiring GPS location... Please allow access.' });
+                
+                try {
+                    const position = await getUserLocation();
+                    const distance = getDistance(position.coords.latitude, position.coords.longitude, CAMPUS_LAT, CAMPUS_LON);
+                    
+                    if (distance > MAX_DISTANCE_METERS) {
+                        setStatus({ type: 'error', message: `You are ${Math.round(distance)}m away. You must be within ${MAX_DISTANCE_METERS}m of class.` });
+                        setIsLoading(false); return; 
+                    }
+                    setStatus({ type: '', message: 'Location verified. Submitting...' });
 
-                // Get the exact local date in YYYY-MM-DD format, ignoring UTC
+                } catch (locError) {
+                    let errorMsg = 'Failed to get location. Ensure GPS is on and permissions are granted.';
+                    if (locError.code === 1) errorMsg = "Permission denied. You must allow location access.";
+                    setStatus({ type: 'error', message: errorMsg });
+                    setIsLoading(false); return; 
+                }
+
+                // Get local date in YYYY-MM-DD
                 const now = new Date();
-                const year = now.getFullYear();
-                const month = String(now.getMonth() + 1).padStart(2, '0');
-                const day = String(now.getDate()).padStart(2, '0');
-                const today = `${year}-${month}-${day}`;
+                const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`; 
 
                 try {
                     const response = await fetch(scriptURL, {
@@ -201,31 +314,30 @@
                     });
                     const result = await response.json();
                     if (result.status === 'success') {
-                        setStatus({ type: 'success', message: `Success! Attendance marked.` });
-                        setRollNo('');
+                        setStatus({ type: 'success', message: `Success! Attendance marked for today.` });
+                        setRollNo(''); 
                     } else {
                         setStatus({ type: 'error', message: 'Error: ' + result.message });
                     }
                 } catch (error) {
-                    setStatus({ type: 'error', message: 'Failed to submit. Check network.' });
+                    setStatus({ type: 'error', message: 'Network error. Please try again.' });
                 } finally {
                     setIsLoading(false);
                 }
             };
 
             const handleCheckAttendance = async () => {
-                if (!rollNo) {
+                if(!rollNo) {
                     setStatus({ type: 'error', message: 'Please enter your Roll Number first.' });
                     return;
                 }
                 setIsChecking(true); setRecord(null);
-                setStatus({ type: '', message: 'Fetching records...' });
+                setStatus({ type: '', message: '' });
 
                 try {
                     const response = await fetch(`${scriptURL}?rollNo=${rollNo}`);
                     const result = await response.json();
                     if (result.status === 'success') {
-                        setStatus({ type: '', message: '' });
                         setRecord(result.data);
                     } else {
                         setStatus({ type: 'error', message: 'Error: ' + result.message });
@@ -239,47 +351,60 @@
 
             return (
                 <div className="container">
-                    <h2 style={{ textAlign: 'center', marginBottom: '5px' }}>Student Portal</h2>
-
+                    <h2>Student Portal</h2>
+                    
                     {!isClassActive && (
-                        <div style={{ backgroundColor: '#fff3cd', color: '#856404', padding: '10px', borderRadius: '4px', textAlign: 'center', marginBottom: '15px', fontWeight: 'bold' }}>
-                            Attendance button opens during lecture hours.
+                        <div className="message warning">
+                            Attendance is currently closed. It will open automatically during lecture hours.
                         </div>
                     )}
 
                     {status.message && (
-                        <div className={`message ${status.type === 'success' ? 'success' : status.type === 'error' ? 'error' : ''}`} style={{ marginTop: '15px' }}>
+                        <div className={`message ${status.type}`}>
+                            {status.type === '' && isLoading && '⏳ '} 
                             {status.message}
                         </div>
                     )}
 
                     <form onSubmit={handleMarkPresent}>
-                        <label>Enter your Roll Number:</label>
-                        <input type="text" value={rollNo} onChange={(e) => setRollNo(e.target.value)} required placeholder="e.g., 25241774204" />
-
+                        <label>Student Roll Number</label>
+                        <input 
+                            type="text" 
+                            value={rollNo} 
+                            onChange={(e) => setRollNo(e.target.value)} 
+                            required 
+                            placeholder="e.g., 42" 
+                        />
+                        
                         <div className="btn-group">
                             <button type="submit" className="btn-primary" disabled={isLoading || isChecking || !isClassActive}>
-                                {isLoading ? 'Submitting...' : 'Mark Present'}
+                                {isLoading ? <div className="spinner"></div> : 'Mark Present'}
                             </button>
                             <button type="button" className="btn-secondary" onClick={handleCheckAttendance} disabled={isLoading || isChecking}>
-                                {isChecking ? 'Checking...' : 'Check Status'}
+                                {isChecking ? <div className="spinner"></div> : 'Check Status'}
                             </button>
                         </div>
                     </form>
 
                     {record && (
                         <div className="record-card">
-                            <div className="percentage">Attendance: {record.percentage}%</div>
-                            <div style={{ textAlign: 'center', color: '#555' }}>Present: {record.presentClasses} / {record.totalClasses} Days</div>
-
+                            <div className="percentage">{record.percentage}%</div>
+                            <div style={{textAlign: 'center', color: 'var(--text-muted)', fontSize: '14px', fontWeight: '500'}}>
+                                Present: {record.presentClasses} of {record.totalClasses} Days
+                            </div>
+                            
                             <div className="history-list">
                                 {record.history.length === 0 ? (
-                                    <div style={{ textAlign: 'center', padding: '10px' }}>No records yet.</div>
+                                    <div style={{textAlign: 'center', padding: '20px', color: 'var(--text-muted)', fontSize: '14px'}}>
+                                        No attendance records found yet.
+                                    </div>
                                 ) : (
                                     record.history.map((day, index) => (
                                         <div key={index} className="history-item">
-                                            <span>{day.date}</span>
-                                            <span className={day.status === 'Present' ? 'text-present' : 'text-absent'}>{day.status}</span>
+                                            <span style={{color: 'var(--secondary)'}}>{day.date}</span>
+                                            <span className={`badge ${day.status === 'Present' ? 'badge-present' : 'badge-absent'}`}>
+                                                {day.status}
+                                            </span>
                                         </div>
                                     ))
                                 )}
@@ -294,5 +419,4 @@
         root.render(<AttendanceApp />);
     </script>
 </body>
-
 </html>
