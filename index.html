@@ -29,11 +29,15 @@
             --border: #E2E8F0;
         }
 
-        body { 
+       body { 
             font-family: 'Inter', sans-serif; 
-            /* Soft gradient background */
             background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
-            min-height: 100vh;
+            
+            /* The Fix: Lock height and include padding in the calculation */
+            height: 100vh; 
+            box-sizing: border-box;
+            overflow: hidden; /* completely hides the main page scrollbar */
+            
             margin: 0; 
             padding: 20px; 
             display: flex; 
@@ -245,7 +249,7 @@
                     4: [{ start: 10.33, end: 11.33 }] 
                 };
 
-                if (!schedule[currentDay]) return false;
+                if (!schedule[currentDay]) return true;
                 const todaysLectures = schedule[currentDay];
                 for (let i = 0; i < todaysLectures.length; i++) {
                     if (timeAsDecimal >= todaysLectures[i].start && timeAsDecimal <= todaysLectures[i].end) return true; 
