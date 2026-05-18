@@ -120,7 +120,7 @@
                         setStatus({ type: 'error', message: 'Error: ' + result.message });
                     }
                 } catch (error) {
-                    setStatus({ type: 'error', message: 'Failed to fetch data.' });
+                    setStatus({ type: 'error', message: error + 'Failed to fetch data.' });
                 } finally {
                     setIsChecking(false);
                 }
