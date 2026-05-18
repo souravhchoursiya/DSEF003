@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSEF003 | Attendance Portal</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); max-width: 400px; width: 100%; }
+        input, button { width: 100%; padding: 12px; margin-top: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px; }
+        .btn-group { display: flex; gap: 10px; margin-bottom: 20px; margin-top: 15px; }
+        .btn-primary { background-color: #007bff; color: white; border: none; cursor: pointer; font-weight: bold; }
+        .btn-primary:disabled { background-color: #a0cbf5; cursor: not-allowed; }
+        .btn-secondary { background-color: #6c757d; color: white; border: none; cursor: pointer; font-weight: bold; }
+        .btn-secondary:disabled { background-color: #adb5bd; cursor: not-allowed; }
+        .message { padding: 10px; border-radius: 4px; text-align: center; font-weight: bold; margin-bottom: 15px;}
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .record-card { background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px; padding: 15px; margin-top: 20px; }
+        .percentage { font-size: 24px; font-weight: bold; text-align: center; margin-bottom: 10px; color: #333; }
+        .history-list { max-height: 150px; overflow-y: auto; border-top: 1px solid #ccc; padding-top: 10px; margin-top: 10px; }
+        .history-item { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+        .text-present { color: #28a745; font-weight: bold; }
+        .text-absent { color: #dc3545; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        function AttendanceApp() {
+            const [rollNo, setRollNo] = React.useState('');
+            const [status, setStatus] = React.useState({ type: '', message: '' });
+            const [isLoading, setIsLoading] = React.useState(false);
+            const [isChecking, setIsChecking] = React.useState(false);
+            const [record, setRecord] = React.useState(null);
+
+            // ---> PASTE YOUR APPS SCRIPT WEB APP URL HERE <---
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyKBA4CMxEiC5xbwU-OATiUS7u-Ssunxg3vgTe9cIOkl7e-JUoV-qdQWEo1yaWzceSD/exec';
+
+            // --- LECTURE SCHEDULE LOGIC ---
+            const checkIsClassTime = () => {
+                const now = new Date();
+                const currentDay = now.getDay(); 
+                const timeAsDecimal = now.getHours() + (now.getMinutes() / 60);
+
+                // YOUR EXACT SCHEDULE (Edit this block)
+                const schedule = {
+                    1: [ // Monday
+                        { start: 10.0, end: 12.0 },              // 10:00 AM to 12:00 PM
+                        { start: 14.0, end: 15 + (30/60) }       // 2:00 PM to 3:30 PM
+                    ],
+                    4: [ // Thursday
+                        { start: 10 + (20/60), end: 11 + (20/60) } // Exactly 10:20 AM to 11:20 AM
+                    ]
+                };
+
+                if (!schedule[currentDay]) return false;
+
+                const todaysLectures = schedule[currentDay];
+                for (let i = 0; i < todaysLectures.length; i++) {
+                    if (timeAsDecimal >= todaysLectures[i].start && timeAsDecimal <= todaysLectures[i].end) {
+                        return true; 
+                    }
+                }
+                return false; 
+            };
+
+            const isClassActive = checkIsClassTime();
+
+            const handleMarkPresent = async (e) => {
+                e.preventDefault();
+                if (!checkIsClassTime()) {
+                    setStatus({ type: 'error', message: 'Attendance is closed. It is not class time.' });
+                    return;
+                }
+                if(!rollNo) return;
+                setIsLoading(true); setRecord(null);
+                setStatus({ type: '', message: 'Submitting...' });
+
+                const today = new Date().toISOString().split('T')[0]; 
+
+                try {
+                    const response = await fetch(scriptURL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({ rollNo: rollNo, date: today })
+                    });
+                    const result = await response.json();
+                    if (result.status === 'success') {
+                        setStatus({ type: 'success', message: `Success! Attendance marked.` });
+                        setRollNo(''); 
+                    } else {
+                        setStatus({ type: 'error', message: 'Error: ' + result.message });
+                    }
+                } catch (error) {
+                    setStatus({ type: 'error', message: 'Failed to submit. Check network.' });
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+
+            const handleCheckAttendance = async () => {
+                if(!rollNo) {
+                    setStatus({ type: 'error', message: 'Please enter your Roll Number first.' });
+                    return;
+                }
+                setIsChecking(true); setRecord(null);
+                setStatus({ type: '', message: 'Fetching records...' });
+
+                try {
+                    const response = await fetch(`${scriptURL}?rollNo=${rollNo}`);
+                    const result = await response.json();
+                    if (result.status === 'success') {
+                        setStatus({ type: '', message: '' });
+                        setRecord(result.data);
+                    } else {
+                        setStatus({ type: 'error', message: 'Error: ' + result.message });
+                    }
+                } catch (error) {
+                    setStatus({ type: 'error', message: 'Failed to fetch data.' });
+                } finally {
+                    setIsChecking(false);
+                }
+            };
+
+            return (
+                <div className="container">
+                    <h2 style={{textAlign: 'center', marginBottom: '5px'}}>Student Portal</h2>
+                    
+                    {!isClassActive && (
+                        <div style={{ backgroundColor: '#fff3cd', color: '#856404', padding: '10px', borderRadius: '4px', textAlign: 'center', marginBottom: '15px', fontWeight: 'bold' }}>
+                            Attendance button opens during lecture hours.
+                        </div>
+                    )}
+
+                    {status.message && (
+                        <div className={`message ${status.type === 'success' ? 'success' : status.type === 'error' ? 'error' : ''}`} style={{marginTop: '15px'}}>
+                            {status.message}
+                        </div>
+                    )}
+
+                    <form onSubmit={handleMarkPresent}>
+                        <label>Enter your Roll Number:</label>
+                        <input type="text" value={rollNo} onChange={(e) => setRollNo(e.target.value)} required placeholder="e.g., 42" />
+                        
+                        <div className="btn-group">
+                            <button type="submit" className="btn-primary" disabled={isLoading || isChecking || !isClassActive}>
+                                {isLoading ? 'Submitting...' : 'Mark Present'}
+                            </button>
+                            <button type="button" className="btn-secondary" onClick={handleCheckAttendance} disabled={isLoading || isChecking}>
+                                {isChecking ? 'Checking...' : 'Check Status'}
+                            </button>
+                        </div>
+                    </form>
+
+                    {record && (
+                        <div className="record-card">
+                            <div className="percentage">Attendance: {record.percentage}%</div>
+                            <div style={{textAlign: 'center', color: '#555'}}>Present: {record.presentClasses} / {record.totalClasses} Days</div>
+                            
+                            <div className="history-list">
+                                {record.history.length === 0 ? (
+                                    <div style={{textAlign: 'center', padding: '10px'}}>No records yet.</div>
+                                ) : (
+                                    record.history.map((day, index) => (
+                                        <div key={index} className="history-item">
+                                            <span>{day.date}</span>
+                                            <span className={day.status === 'Present' ? 'text-present' : 'text-absent'}>{day.status}</span>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<AttendanceApp />);
+    </script>
+</body>
+</html>
