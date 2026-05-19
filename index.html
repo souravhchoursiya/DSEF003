@@ -451,9 +451,13 @@
                     )}
 
                     <form onSubmit={handleMarkPresent}>
-                        <label>Student Roll Number</label>
-                        <input type="text" value={rollNo} onChange={(e) => setRollNo(e.target.value)} required placeholder="e.g., 25241774204" />
-
+                        <input
+                            type="text"
+                            value={rollNo}
+                            onChange={(e) => setRollNo(e.target.value)}
+                            required
+                            placeholder="Enter Examination Roll Number to Unlock"
+                        />
                         <div className="btn-group">
                             <button type="submit" className="btn-primary" disabled={isLoading || isChecking || !isClassActive}>
                                 {isLoading ? <div className="spinner"></div> : 'Mark Present'}
