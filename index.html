@@ -197,6 +197,21 @@
             letter-spacing: -1px;
         }
 
+        /* NEW CSS: For the Marks Display */
+        .mark-display {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            color: var(--text-main);
+            letter-spacing: -1px;
+        }
+
+        .label-muted {
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
         .history-list {
             max-height: 180px;
             overflow-y: auto;
@@ -246,35 +261,18 @@
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .history-list::-webkit-scrollbar {
@@ -305,22 +303,33 @@
             // ==========================================
             // 🛑 SETUP YOUR VARIABLES HERE 🛑
             // ==========================================
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbyKBA4CMxEiC5xbwU-OATiUS7u-Ssunxg3vgTe9cIOkl7e-JUoV-qdQWEo1yaWzceSD/exec'; // The /exec URL
-            const CAMPUS_LAT = 28.6139;  // DU Latitude
-            const CAMPUS_LON = 77.2090;  // DU Longitude
-            const MAX_DISTANCE_METERS = 30; // Max allowed distance in meters
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyKBA4CMxEiC5xbwU-OATiUS7u-Ssunxg3vgTe9cIOkl7e-JUoV-qdQWEo1yaWzceSD/exec';
+            const CAMPUS_LAT = 28.6139;  
+            const CAMPUS_LON = 77.2090;  
+            const MAX_DISTANCE_METERS = 30; 
 
-            // NEW: CR Contact Info
+            // CR Contact Info
             const CR_NAME = "Souravh Choursiya";
-            const CR_PHONE = "919891574024"; // EXACT FORMAT: Country code (91 for India) + 10 digit number. NO '+' or spaces!
+            const CR_PHONE = "919891574024"; 
             // ==========================================
+
+            // NEW: Function to Calculate Final Mark
+            const calculateFinalMark = (percentage) => {
+                const numericPercentage = parseFloat(percentage);
+                if (numericPercentage < 67) return 0;
+                if (numericPercentage >= 67 && numericPercentage < 70) return 1.2;
+                if (numericPercentage >= 70 && numericPercentage < 75) return 2.4;
+                if (numericPercentage >= 75 && numericPercentage < 80) return 3.6;
+                if (numericPercentage >= 80 && numericPercentage < 85) return 4.8;
+                if (numericPercentage >= 85) return 6;
+                return 0; 
+            };
 
             const checkIsClassTime = () => {
                 const now = new Date();
                 const currentDay = now.getDay();
                 const timeAsDecimal = now.getHours() + (now.getMinutes() / 60);
 
-                // Edit your schedule here (0=Sun, 1=Mon...6=Sat)
                 const schedule = {
                     1: [{ start: 10.0, end: 12.0 }, { start: 14.0, end: 15.5 }],
                     4: [{ start: 10.33, end: 11.33 }]
@@ -383,7 +392,6 @@
                     setIsLoading(false); return;
                 }
 
-                // Force local date creation instead of UTC
                 const now = new Date();
                 const year = now.getFullYear();
                 const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -471,8 +479,21 @@
 
                     {record && (
                         <div className="record-card">
-                            <div className="percentage">{record.percentage}%</div>
-                            <div style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '14px', fontWeight: '500' }}>
+                            {/* NEW UI: Showing Percentage and Mark Side-by-Side */}
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '15px', marginBottom: '10px' }}>
+                                <div style={{ textAlign: 'center', flex: 1, borderRight: '1px solid var(--border)', paddingRight: '15px' }}>
+                                    <div className="label-muted">Attendance</div>
+                                    <div className="percentage">{record.percentage}%</div>
+                                </div>
+                                <div style={{ textAlign: 'center', flex: 1, paddingLeft: '15px' }}>
+                                    <div className="label-muted">Final Mark</div>
+                                    <div className="mark-display">
+                                        {calculateFinalMark(record.percentage).toFixed(1)} <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>/ 6.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '14px', fontWeight: '500', marginTop: '10px', marginBottom: '15px' }}>
                                 Present: {record.presentClasses} of {record.totalClasses} Days
                             </div>
 
@@ -495,7 +516,6 @@
                         </div>
                     )}
 
-                    {/* NEW: CR WhatsApp Note */}
                     <div style={{ marginTop: '25px', textAlign: 'center', fontSize: '13px', color: 'var(--text-muted)' }}>
                         Note: If you find any discrepancy in your record, please contact the CR:{' '}
                         <a
@@ -507,7 +527,6 @@
                             {CR_NAME} (WhatsApp)
                         </a>
                     </div>
-
                 </div>
             );
         }
